@@ -9,24 +9,26 @@ library(dplyr)
 
 server <- shinyServer(function(input, output, session) {
     
+    df2 <- read.csv('sales_data_sample.csv',header = TRUE)
+    
     data <- reactive({ 
         req(input$file1) ## requerimiento para solicitud de data
         
         inFile <- input$file1 
         df <- read.csv(inFile$datapath, header = input$header, sep = input$sep,
                        quote = input$quote)
-                            
+        
         updateSelectInput(session, inputId = 'xcol', label = 'X Variable',
                           choices = names(df), selected = names(df))
         updateSelectInput(session, inputId = 'ycol', label = 'Y Variable',
                           choices = names(df), selected = names(df)[2])
-
+        
         updateSelectInput(session, inputId = 'xcoln', label = 'X Variable Num',                              
                           choices = names(df), selected = names(df)[sapply(df, is.numeric)])
-
+        
         return(df)
     })
-     
+    
     output$contents <- renderTable({
         data()
     })
@@ -41,7 +43,7 @@ server <- shinyServer(function(input, output, session) {
         x2    <- data()[, input$xcoln]
         bins2 <- nrow(data())
         hist(x2, breaks = bins2, col = 'darkgray', border = 'green')
-                
+        
     })
     
     #sharing_url <- eventReactive(input$generateURL, {
@@ -60,25 +62,23 @@ server <- shinyServer(function(input, output, session) {
         #dataset <- data %>%
         #    select('SALES', 'TERRITORY', 'ORDERNUMBER')
         #dataset <- data[,c('SALES', 'TERRITORY', 'ORDERNUMBER')]
-        dataset <- df[, c("SALES", "CITY", "YEAR_ID", "PRODUCTLINE","TERRITORY")]
+        dataset <- df2[, c("SALES", "CITY", "YEAR_ID", "PRODUCTLINE","TERRITORY")]
         summary(dataset, digits = 2)
     })
     
     #
     output$Hist2Plot <- renderPlot({
-        ggplot(df, aes(SALES, COUNTRY)) + geom_point(colour='red')+ geom_smooth()
-        })
+        ggplot(df2, aes(SALES, COUNTRY)) + geom_point(colour='red')+ geom_smooth()
+    })
     output$Hist3Plot <- renderPlot({
         #ggplot(df, aes(PRODUCTLINE, SALES)) + geom_point(colour='blue')+ geom_smooth()
-        ggplot(df, aes(PRODUCTLINE)) + geom_bar(colour='blue')
+        ggplot(df2, aes(PRODUCTLINE)) + geom_bar(colour='blue')
     })
     
     output$Hist4Plot <- renderPlot({
-        ggplot(df, aes(PRODUCTLINE)) + geom_bar(aes(fill = CITY))
+        ggplot(df2, aes(PRODUCTLINE)) + geom_bar(aes(fill = CITY))
     })
-
+    
     #
     
 })
-
-
