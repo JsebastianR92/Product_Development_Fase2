@@ -14,6 +14,7 @@ ui <- shinyUI(fluidPage(
     titlePanel("Parcial Fase 2"),
     tabsetPanel(
         tabPanel("Carga de archivo",
+                 
                  titlePanel("Carga tu archivo"),
                  sidebarLayout(
                      sidebarPanel(
@@ -36,6 +37,12 @@ ui <- shinyUI(fluidPage(
                          
                      ),
                      mainPanel(
+                         h2("Diego Valle - 20003022"),
+                         h2("Sebastian Rodriguez - 20003076"),
+                         h4(" Segunda fase del parcial en el curso de product development
+                            por favor descarga el set de datos (sales_data_sample) del siguiente github: 
+                            https://github.com/JsebastianR92/Product_Development_Fase2"),
+                         h5("_____________________________________________________________________________________________________________________"),
                          tableOutput('contents')
                      )
                  )
@@ -156,7 +163,7 @@ server <- shinyServer(function(input, output, session) {
     
 })
 
-#rsconnect::deployApp('ruta en mi pc')
+#rsconnect::deployApp('C:/Users/jseba/Documents/Galileo/4to Ciclo/PD/ParcialFase2')
 
 # Run the application 
 shinyApp(ui = ui, server = server)
