@@ -30,6 +30,12 @@ ui <- shinyUI(fluidPage(
                          
                      ),
                      mainPanel(
+                         h2("Diego Valle - 20003022"),
+                         h2("Sebastian Rodriguez - 20003076"),
+                         h4(" Segunda fase del parcial en el curso de product development
+                            por favor descarga el set de datos (sales_data_sample) del siguiente github: 
+                            https://github.com/JsebastianR92/Product_Development_Fase2"),
+                         h5("_____________________________________________________________________________________________________________________"),
                          tableOutput('contents')
                      )
                  )
@@ -53,7 +59,7 @@ ui <- shinyUI(fluidPage(
                      headerPanel('Escoja 1 variable numerica'),
                      sidebarPanel(
                          selectInput('xcoln', 'Variable X Num', ""),
-
+                         
                          
                      ),
                      mainPanel(
@@ -67,8 +73,8 @@ ui <- shinyUI(fluidPage(
                  plotOutput("Hist2Plot", click = "plot_click"),
                  plotOutput("Hist3Plot", click = "plot_click"),
                  plotOutput("Hist4Plot", click = "plot_click")
-                 )
-
+        )
+        
     )
 )
 )
