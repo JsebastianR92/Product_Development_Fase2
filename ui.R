@@ -63,6 +63,11 @@ ui <- shinyUI(fluidPage(
                          
                      ),
                      mainPanel(
+                         selectInput("set_col",
+                                     "Seleccione el color: ",
+                                     choices=c("aquamarine", "blue", "blueviolet", "darkgray", "chocolate"),
+                                     selected='darkgray'),
+                         textInput("url",value="", label="URL"),
                          plotOutput('HistoPlot')
                      )
                  )
