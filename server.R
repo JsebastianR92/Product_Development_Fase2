@@ -29,6 +29,8 @@ server <- shinyServer(function(input, output, session) {
         return(df)
     })
     
+    
+    
     output$contents <- renderTable({
         data()
     })
@@ -39,16 +41,43 @@ server <- shinyServer(function(input, output, session) {
         plot(x)
         
     })
+    
+    observe({
+        query <- parseQueryString(session$clientData$url_search)
+        bins2 <- query[["bins2"]]
+        
+        bar_col <- query[["color"]]
+        if(!is.null(bins2)){
+            2 <- as.integer(bins2)
+            updateSliderInput(session, "bins2", value = bins2)
+        }
+        if(!is.null(bar_col)){
+            updateSelectInput(session, "set_col", selected = bar_col)
+        }
+    })
+    
+    observe({
+        bins2 <- input$bins2
+        set_col <-  input$set_col
+        link_url <- paste0('http://',
+                           session$clientData$url_hostname, ":",
+                           session$clientData$url_port,
+                           session$clientData$url_pathname,
+                           '?bins2=',bins2,"&",
+                           'color=',set_col)
+        updateTextInput(session,"url",value=link_url)
+    })
+    
     output$HistoPlot <- renderPlot({
         x2    <- data()[, input$xcoln]
         bins2 <- nrow(data())
-        hist(x2, breaks = bins2, col = 'darkgray', border = 'green')
+        hist(x2, breaks = bins2, col = input$set_col, border = 'green')
         
     })
     
     #sharing_url <- eventReactive(input$generateURL, {
     #    app_url <- "http://ec2-54-85-131-139.compute-1.amazonaws.com/shiny/rstudio/Parcial_Fase_II"
-    #    full_url <- paste(app_url, "?territory=", input$territory, "&customer=", input$customername, "&order=", input$ordernumber, sep="")
+    #    full_url <- paste(app_url, "?TERRITORY=", input$TERRITORY, "&PRODUCTLINE=", input$PRODUCTLINE, "&ORDERNUMBER=", input$ORDERNUMBER, sep="")
     #    a(full_url, href=full_url)
     #})
     
